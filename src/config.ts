@@ -8,11 +8,17 @@ export type Config = {
 
 export function setUser(userName: string): void {
     const configFilePath = getConfigFilePath();
-    const configData: Config = {
-        dbUrl: dbUrl(),
-        currentUserName: userName,
+    // Read in the existing config and modify it if it exists, else make new.
+    let inputConfig = readConfig();
+    if (inputConfig) {
+        inputConfig.currentUserName = userName;
+    } else {
+        inputConfig = {
+            dbUrl: dbUrl(),
+            currentUserName: userName
+        };
     }
-    const jsonString: string = JSON.stringify(configData, null, 2);
+    const jsonString: string = JSON.stringify(inputConfig, null, 2);
     try {
         fs.writeFileSync(configFilePath, jsonString);
     } catch (error) {
