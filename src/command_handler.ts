@@ -1,5 +1,5 @@
 
-export type CommandHandler = (cmdName: string, ...args: string[]) => void;
+export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 
 export type CommandsRegistry = Record<string, CommandHandler>;
 
@@ -7,6 +7,6 @@ export function registerCommand(registry: CommandsRegistry, cmdName: string, han
     registry[cmdName] = handler;
 }
 
-export function runCommand(registry: CommandsRegistry, cmdName: string, ...args: string[]): void {
-    registry[cmdName](cmdName, ...args);
+export async function runCommand(registry: CommandsRegistry, cmdName: string, ...args: string[]): Promise<void> {
+    await registry[cmdName](cmdName, ...args);
 }

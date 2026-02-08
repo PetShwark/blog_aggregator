@@ -28,8 +28,8 @@ export function setUser(userName: string): void {
 
 export function readConfig(): Config | undefined {
     const configPath = getConfigFilePath();
-    let configOut: Config = {} as Config;
     try {
+        let configOut: Config = {} as Config;
         let readFile = fs.readFileSync(configPath, 'utf-8');
         configOut = JSON.parse(readFile);
         return configOut;
