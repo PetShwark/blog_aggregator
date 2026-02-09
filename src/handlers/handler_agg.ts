@@ -1,4 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
+import { getNextFeedToFetch, markFeedFetched } from "src/lib/db/queries/feeds";
 
 type RSSFeed = {
     channel: {
@@ -78,19 +79,66 @@ export async function fetchFeed(feedURL: string): Promise<RSSFeed> {
     }
 }
 
-export async function handlerAgg(cmdName: string, ...args: string[]): Promise<void> {
-    let feedURL: string;
-    if (args.length === 0) {
-        feedURL = 'https://www.wagslane.dev/index.xml';
-    } else {
-        feedURL = args[0];
+async function scrapeFeeds() {
+    const nextFeed = await getNextFeedToFetch();
+    if (!nextFeed) {
+        throw new Error('No feeds to fetch.');
     }
+    await markFeedFetched(nextFeed.id);
+    const feedData = await fetchFeed(nextFeed.url);
+    if (!feedData) {
+        throw new Error(`Failed to fetch feed data for feed ID ${nextFeed.id}`);
+    }
+    console.log(`\nFetched feed data for feed "${nextFeed.name}"`);
+    feedData.channel.item.forEach(item => {
+        console.log(`Title: ${item.title}`);
+    });
+}
+
+function parseDuration(duration: string): number {
+    const regex = /^(\d+)(ms|s|m|h)$/;
+    const match = duration.match(regex);
+    if (!match) {
+        throw new Error(`Invalid duration format: ${duration}`);
+    }
+    const value = parseInt(match[1], 10);
+    const unit = match[2];
+    switch (unit) {
+        case 'ms':
+            return value;
+        case 's':
+            return value * 1000;
+        case 'm':
+            return value * 60 * 1000;
+        case 'h':
+            return value * 60 * 60 * 1000;
+        default:
+            throw new Error(`Invalid duration unit: ${unit}`);
+    }
+}
+
+function handleScrapeError(err: any) {
+    console.error(`Error during feed scraping: ${err}`);
+}
+
+export async function handlerAgg(cmdName: string, ...args: string[]): Promise<void> {
+    const timeBetweenFetches = args.length > 0 ? args[0] : '1h';
+    const timeBetweenFetchesMs = parseDuration(timeBetweenFetches);
+    console.log(`Starting feed scraper with time between fetches: ${timeBetweenFetches} (${timeBetweenFetchesMs} ms)`);
     try {
-        const feedData = await fetchFeed(feedURL);
-        console.log(`Fetched feed data from ${feedURL}:`);
-        console.log(JSON.stringify(feedData, null, 2));
+        scrapeFeeds().catch(handleScrapeError);
+        const interval = setInterval(() => {
+            scrapeFeeds().catch(handleScrapeError);
+        }, timeBetweenFetchesMs);
+        await new Promise<void>((resolve) => {
+            process.on("SIGINT", () => {
+                console.log("Shutting down feed aggregator...");
+                clearInterval(interval);
+                resolve();
+            });
+        });
     } catch (err) {
-        console.error(`Failed to fetch feed from ${feedURL}: ${err}`);
+        console.error(`Failed to start feed scraper: ${err}`);
         throw err;
     }
 }
