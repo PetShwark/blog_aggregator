@@ -6,6 +6,7 @@ import { handlerRegister } from "./handler_register";
 import { handlerReset } from "./handler_reset";
 import { handlerUsers } from "./handler_users";
 import { handlerAgg } from "./handler_agg";
+import { handlerAddFeed } from "./handler_addfeed";
 
 async function main() {
   if (argv.length < 3) {
@@ -20,6 +21,7 @@ async function main() {
   registerCommand(commandRegistry, 'reset', handlerReset);
   registerCommand(commandRegistry, 'users', handlerUsers);
   registerCommand(commandRegistry, 'agg', handlerAgg);
+  registerCommand(commandRegistry, 'addfeed', handlerAddFeed);
   console.log('Registered commands.');
   try {
     await runCommand(commandRegistry, commandName, ...args.slice(1));
