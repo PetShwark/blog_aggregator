@@ -5,6 +5,8 @@ import { handlerRegister } from "./handler_register";
 import { handlerReset } from "./handler_reset";
 import { handlerUsers } from "./handler_users";
 import { handlerAddFeed } from "./handler_addfeed";
+import { handleFollow } from "./handler_follow";
+import { handleFollowing } from "./handler_following";
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 
@@ -26,4 +28,6 @@ export function registerCommands(registry: CommandsRegistry): void {
     registerCommand(registry, 'agg', handlerAgg);
     registerCommand(registry, 'addfeed', handlerAddFeed);
     registerCommand(registry, 'feeds', handlerFeeds);
+    registerCommand(registry, 'follow', handleFollow);
+    registerCommand(registry, 'following', handleFollowing);
 }

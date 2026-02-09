@@ -15,6 +15,13 @@
       "when": 1770649806279,
       "tag": "0001_moaning_jack_flag",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770657927109,
+      "tag": "0002_high_cyclops",
+      "breakpoints": true
     }
   ]
 }

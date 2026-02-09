@@ -15,6 +15,11 @@ export async function getFeeds() {
     return feedsList;
 }
 
+export async function getFeedByUrl(url: string) {
+    const [feed] = await db.select().from(feeds).where(eq(feeds.url, url)).limit(1);
+    return feed;
+}
+
 export async function getFeedsWithUserNames() {
     const feedsList = await db.select().from(feeds).innerJoin(users, eq(feeds.userId, users.id));
     return feedsList;
