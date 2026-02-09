@@ -1,7 +1,7 @@
-import { createFeed } from "./lib/db/queries/feeds.js";
-import { Feed, User } from "./lib/db/schema.js";
-import { getUserByName } from "./lib/db/queries/users.js";
-import { readConfig } from "./config.js";
+import { createFeed } from "../lib/db/queries/feeds.js";
+import { Feed, User } from "../lib/db/schema.js";
+import { getUserByName } from "../lib/db/queries/users.js";
+import { readConfig } from "../config.js";
 
 export function printFeed(feed: Feed, user: User): void {
     console.log(`Feed: ${feed.name} (${feed.url}) - User: ${user.name}`);

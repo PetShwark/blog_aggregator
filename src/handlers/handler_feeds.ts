@@ -1,4 +1,4 @@
-import { getFeedsWithUserNames } from "./lib/db/queries/feeds";
+import { getFeedsWithUserNames } from "../lib/db/queries/feeds";
 
 export async function handlerFeeds(cmdName: string, ...args: string[]): Promise<void> {
     try {
