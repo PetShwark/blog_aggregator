@@ -11,7 +11,6 @@ async function main() {
   const commandName = args[0];
   const commandRegistry: CommandsRegistry = {};
   registerCommands(commandRegistry);
-  console.log('Registered commands.');
   try {
     await runCommand(commandRegistry, commandName, ...args.slice(1));
     const configJson = JSON.stringify(readConfig());
