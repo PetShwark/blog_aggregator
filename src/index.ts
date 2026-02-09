@@ -3,6 +3,7 @@ import { readConfig } from "./config"
 import { CommandsRegistry, registerCommand, runCommand } from "./command_handler"
 import { handlerLogin } from "./handler_login";
 import { handlerRegister } from "./handler_register";
+import { handlerReset } from "./handler_reset";
 
 async function main() {
   if (argv.length < 3) {
@@ -14,6 +15,7 @@ async function main() {
   const commandRegistry: CommandsRegistry = {};
   registerCommand(commandRegistry, 'login', handlerLogin);
   registerCommand(commandRegistry, 'register', handlerRegister);
+  registerCommand(commandRegistry, 'reset', handlerReset)
   console.log('Registered commands.');
   try {
     await runCommand(commandRegistry, commandName, ...args.slice(1));
