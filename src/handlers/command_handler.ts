@@ -8,6 +8,7 @@ import { handlerAddFeed } from "./handler_addfeed";
 import { handleFollow } from "./handler_follow";
 import { handleFollowing } from "./handler_following";
 import { handleUnfollow } from "./handler_unfollow";
+import { handlerBrowse } from "./handler_browse";
 import { User } from "../lib/db/schema";
 import { getUserByName } from "../lib/db/queries/users";
 import { readConfig } from "../config";
@@ -55,4 +56,5 @@ export function registerCommands(registry: CommandsRegistry): void {
     registerCommand(registry, 'follow', middlewareLoggedIn(handleFollow));
     registerCommand(registry, 'following', middlewareLoggedIn(handleFollowing));
     registerCommand(registry, 'unfollow', middlewareLoggedIn(handleUnfollow));
+    registerCommand(registry, 'browse', middlewareLoggedIn(handlerBrowse));
 }
