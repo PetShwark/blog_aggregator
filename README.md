@@ -1,4 +1,4 @@
-# GATOR - An RSS feed aggregator guided project for Boot.dev course entitled "Build a Blog Aggregator in TypeScript"
+# gator - An RSS feed aggregator guided project for Boot.dev course entitled "Build a Blog Aggregator in TypeScript"
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@
 
 ## Configuration file
 
-The GATOR RSS feed aggregator system uses a configuration file named ".gatorconfig.json" in the users's home directory.  The structure of the file is as follows.
+The gator RSS feed aggregator system uses a configuration file named ".gatorconfig.json" in the users's home directory.  The structure of the file is as follows.
 
 ```
 {
@@ -20,7 +20,7 @@ The GATOR RSS feed aggregator system uses a configuration file named ".gatorconf
 }
 ```
 
-## GATOR commands
+## gator commands
 
 Run them with the command:
 
@@ -82,5 +82,5 @@ npm run start <command_name> <arguments>
     - arguments
         - NONE
     - Notes
-        - Lists all the users knows to the GATOR system
+        - Lists all the users knows to the gator system
         - Indicates which user is currently logged in
